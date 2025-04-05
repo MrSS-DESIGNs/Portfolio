@@ -24,6 +24,7 @@
       font-family: 'Share Tech Mono', monospace;
       border-left: 2px solid var(--accent);
       border-right: 2px solid var(--accent);
+      cursor: none;
     }
 
     .container {
@@ -141,28 +142,43 @@
       color: #000;
       transform: translateY(-2px);
     }
-    /* Custom cursor circle */
-    .cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    transition: transform 0.1s ease-out;
-  }
-    a:hover ~ .cursor,
-    button:hover ~ .cursor {
-    transform: translate(-50%, -50%) scale(1.5);
-}
 
-  
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: transform 0.15s ease-out;
+    }
+    html, body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container {
+      flex: 1;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--accent);
+      border-top: 1px solid var(--accent);
+      background: var(--glass-bg);
+      backdrop-filter: blur(6px);
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      position: relative;
+    }
+    
   </style>
 </head>
 <body>
-    <div class="cursor" id="cursor"></div>
+  <div class="cursor" id="cursor"></div>
 
   <div class="container">
     <div class="profile-header">
@@ -182,7 +198,7 @@
 
     <div id="about" class="tab-content active hover-card">
       <h2>About Me</h2>
-      <p>Hey there! I'm Tausif Shaikh, a passionate frontend developer and tech enthusiast who loves crafting clean, user-friendly web experiences. Whether it’s playing with animations, responsive designs, or creating seamless UI/UX, I enjoy bringing ideas to life with code.</p>
+      <p>Hey there! I'm Tausif Shaikh, a passionate frontend developer and tech enthusiast who loves crafting clean, user-friendly web experiences.</p>
     </div>
 
     <div id="skills" class="tab-content hover-card">
@@ -208,9 +224,11 @@
       <a href="mailto:palakpk@example.com" class="btn">Email Me</a>
     </div>
   </div>
-
+  <footer>
+    © 2025 Tausif-TS | All rights reserved.
+  </footer>
+  
   <script>
-    // Typing effect for bio
     const text = "Frontend Magician | Web Developer | Code Crafter";
     let i = 0;
     function typing() {
@@ -221,15 +239,19 @@
       }
     }
     typing();
-   
-    // Tab switching
+
     function showTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       event.target.classList.add('active');
     }
-    
+
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
   </script>
 </body>
 </html>
