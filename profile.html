@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Profile | Tausif-TS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --accent: #0ff;
@@ -24,21 +25,34 @@
       font-family: 'Share Tech Mono', monospace;
       border-left: 2px solid var(--accent);
       border-right: 2px solid var(--accent);
-      cursor: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      /* Only use custom cursor on devices that support hover */
+      cursor: crosshair;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body {
+        cursor: none;
+      }
     }
 
     .container {
       max-width: 1000px;
+      width: 100%;
       margin: auto;
-      padding: 2rem;
+      padding: 1.5rem;
+      flex: 1;
     }
 
+    /* Profile Header - Responsive Grid */
     .profile-header {
       display: grid;
       grid-template-columns: 180px 1fr;
       gap: 2rem;
       align-items: center;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       padding: 2rem;
       border: 1px solid var(--accent);
       border-radius: 20px;
@@ -48,7 +62,6 @@
     }
 
     .profile-header:hover {
-      transform: scale(1.02);
       box-shadow: 0 0 25px var(--accent);
     }
 
@@ -58,48 +71,61 @@
       object-fit: cover;
       border-radius: 15px;
       border: 2px solid var(--accent);
+      margin: 0 auto;
       transition: transform 0.3s ease, filter 0.4s ease;
     }
 
-    .profile-header img:hover {
-      transform: scale(1.05);
-      filter: hue-rotate(180deg);
+    .info {
+      text-align: left;
     }
 
     .info h1 {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
       color: var(--accent);
+      margin-bottom: 0.5rem;
     }
 
     .info p {
       font-size: 1.1rem;
       color: #ccc;
+      min-height: 1.5em;
     }
 
+    /* Tabs - Responsive wrapping */
     .tabs {
       display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .tab-btn {
-      padding: 0.5rem 1.2rem;
+      padding: 0.6rem 1.2rem;
       border: 1px solid var(--accent);
       background: transparent;
       color: var(--accent);
       cursor: pointer;
-      border-radius: 10px;
+      border-radius: 8px;
       transition: 0.3s;
+      font-family: inherit;
+      font-size: 0.9rem;
+      flex-grow: 1;
+      max-width: 150px;
+      text-align: center;
     }
 
     .tab-btn.active, .tab-btn:hover {
       background: var(--accent);
       color: var(--bg-dark);
+      box-shadow: 0 0 10px var(--accent);
     }
 
+    /* Content Area */
     .tab-content {
       display: none;
-      animation: fadeIn 0.6s ease forwards;
+      animation: fadeIn 0.5s ease forwards;
+      min-height: 200px;
     }
 
     .tab-content.active {
@@ -115,66 +141,106 @@
       background: var(--glass-bg);
       padding: 1.5rem;
       border: 1px solid var(--accent);
-      border-radius: 10px;
+      border-radius: 15px;
       backdrop-filter: blur(5px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .hover-card:hover {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 0 20px var(--accent);
+    .tab-content h2 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .tab-content ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .tab-content li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .tab-content li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
     }
 
     .btn {
       display: inline-block;
-      margin-top: 1rem;
-      padding: 0.6rem 1.5rem;
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
       background-color: var(--accent);
       color: #000;
       font-weight: bold;
-      border-radius: 20px;
+      border-radius: 4px;
       text-decoration: none;
       transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .btn:hover {
-      background-color: #0cc;
-      color: #000;
+      background-color: #fff;
+      box-shadow: 0 0 15px #fff;
       transform: translateY(-2px);
     }
 
+    /* Custom Cursor */
     .cursor {
       position: fixed;
-      width: 20px;
-      height: 20px;
+      width: 25px;
+      height: 25px;
       border: 2px solid var(--accent);
       border-radius: 50%;
       pointer-events: none;
       transform: translate(-50%, -50%);
       z-index: 9999;
-      transition: transform 0.15s ease-out;
+      display: none; /* Hidden by default, shown via JS on desktop */
+      box-shadow: 0 0 10px var(--accent);
     }
-    html, body {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .container {
-      flex: 1;
-    }
+
     footer {
       text-align: center;
-      padding: 2rem;
+      padding: 1.5rem;
+      font-size: 0.8rem;
       color: var(--accent);
       border-top: 1px solid var(--accent);
-      background: var(--glass-bg);
-      backdrop-filter: blur(6px);
-      font-family: 'Share Tech Mono', monospace;
-      overflow: hidden;
-      position: relative;
+      background: rgba(0,0,0,0.8);
+      margin-top: 2rem;
     }
-    
+
+    /* --- MOBILE STYLES --- */
+    @media (max-width: 650px) {
+      body {
+        border-left-width: 1px;
+        border-right-width: 1px;
+      }
+
+      .profile-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 1.5rem;
+        gap: 1rem;
+      }
+
+      .info {
+        text-align: center;
+      }
+
+      .tab-btn {
+        flex-basis: 45%; /* Two buttons per row on mobile */
+        max-width: none;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -182,7 +248,7 @@
 
   <div class="container">
     <div class="profile-header">
-      <img src="profile.png" alt="Profile Image">
+      <img src="profile.png" alt="Profile Image" onerror="this.src='https://via.placeholder.com/150/00ffff/000000?text=T-TS'">
       <div class="info">
         <h1>Tausif-TS</h1>
         <p id="bio"></p>
@@ -190,68 +256,100 @@
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('about')">About</button>
-      <button class="tab-btn" onclick="showTab('skills')">Skills</button>
-      <button class="tab-btn" onclick="showTab('projects')">Projects</button>
-      <button class="tab-btn" onclick="showTab('contact')">Contact</button>
+      <button class="tab-btn active" onclick="showTab(event, 'about')">About</button>
+      <button class="tab-btn" onclick="showTab(event, 'skills')">Skills</button>
+      <button class="tab-btn" onclick="showTab(event, 'projects')">Projects</button>
+      <button class="tab-btn" onclick="showTab(event, 'contact')">Contact</button>
     </div>
 
     <div id="about" class="tab-content active hover-card">
       <h2>About Me</h2>
       <p>Hey there! I'm Tausif Shaikh, a passionate frontend developer and tech enthusiast who loves crafting clean, user-friendly web experiences.</p>
+      <p style="margin-top: 10px;">I specialize in bringing designs to life using modern web technologies with a heavy focus on interactivity and performance.</p>
     </div>
 
     <div id="skills" class="tab-content hover-card">
       <h2>Skills</h2>
       <ul>
-        <li>HTML, CSS, JavaScript</li>
-        <li>Responsive Design</li>
-        <li>Git & GitHub</li>
-        <li>Figma / UI Design</li>
-        <li>React (basic)</li>
+        <li>HTML5, CSS3, JavaScript (ES6+)</li>
+        <li>Responsive Web Design & UI/UX</li>
+        <li>Version Control (Git & GitHub)</li>
+        <li>Design Tools (Figma / Adobe XD)</li>
+        <li>Frontend Frameworks (React & Tailwind)</li>
       </ul>
     </div>
 
     <div id="projects" class="tab-content hover-card">
       <h2>Projects</h2>
-      <p>Explore some of my recent works demonstrating UI/UX skills and interactivity.</p>
-      <a href="projects.html" class="btn">View Projects</a>
+      <p>My work bridges the gap between design and functionality. I create experiences that are not just usable, but memorable.</p>
+      <a href="index.html#projects" class="btn">View All Projects</a>
     </div>
 
     <div id="contact" class="tab-content hover-card">
       <h2>Contact</h2>
-      <p>Let’s connect and create something awesome together!</p>
-      <a href="mailto:palakpk@example.com" class="btn">Email Me</a>
+      <p>Looking for a developer or just want to chat about tech? Let's connect!</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <a href="mailto:tausif@example.com" class="btn">Email Me</a>
+        
+      </div>
     </div>
   </div>
+
   <footer>
-    © 2025 Tausif-TS | All rights reserved.
+    © 2025 Tausif-TS | Built with Code & Passion
   </footer>
-  
+
   <script>
-    const text = "Frontend Magician | Web Developer | Code Crafter";
-    let i = 0;
+    // Typing Effect
+    const bioText = "Frontend Magician | Web Developer | Code Crafter";
+    let charIndex = 0;
+    const bioElement = document.getElementById("bio");
+
     function typing() {
-      if (i < text.length) {
-        document.getElementById("bio").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typing, 50);
+      if (charIndex < bioText.length) {
+        bioElement.innerHTML += bioText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typing, 60);
       }
     }
-    typing();
+    window.onload = typing;
 
-    function showTab(tabId) {
+    // Tab Logic
+    function showTab(event, tabId) {
+      // Remove active from all buttons
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      // Remove active from all content
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      
+      // Add active to current
       document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
+      event.currentTarget.classList.add('active');
     }
 
+    // Cursor Logic
     const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (!isTouchDevice) {
+      cursor.style.display = 'block';
+      document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+
+      // Add hover effect for interactables
+      const interactables = document.querySelectorAll('button, a, .profile-header');
+      interactables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+          cursor.style.background = 'rgba(0, 255, 255, 0.1)';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+          cursor.style.background = 'transparent';
+        });
+      });
+    }
   </script>
 </body>
 </html>
